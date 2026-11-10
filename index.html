@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mesmo Fato</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Source+Serif+4:wght@600;700&display=swap">
+<style>
+:root{--bg:#FBFAF7;--card:#FFFFFF;--ink:#1B1F24;--muted:#5A616B;--line:#E4E1DA;--accent:#0F5C6E;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171A;--card:#1D2125;--ink:#ECE9E2;--muted:#A3A9B1;--line:#2E3338;--accent:#6CC4D6;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14171A;--card:#1D2125;--ink:#ECE9E2;--muted:#A3A9B1;--line:#2E3338;--accent:#6CC4D6;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:20px}
+.brand{font:700 26px 'Source Serif 4',Georgia,serif;margin:0 0 6px}
+.muted{color:var(--muted);margin:0 0 18px}
+.lbl{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--muted)}
+.seg{display:flex;gap:8px;margin:8px 0 18px}
+.seg button{flex:1;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:600 13px Inter,system-ui,sans-serif;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+h2{font:600 20px 'Source Serif 4',Georgia,serif;margin:8px 0 12px}
+.card{display:block;padding:16px;margin-bottom:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:inherit;text-decoration:none}
+.cat{font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase}
+.tit{font:600 19px/1.3 'Source Serif 4',Georgia,serif;margin:6px 0}
+.tit2{font:700 26px/1.2 'Source Serif 4',Georgia,serif;margin:6px 0 16px}
+.meta{font-size:13px;color:var(--muted)}
+.box{padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.rot{font-size:12px;font-weight:600;color:var(--accent);margin-bottom:8px}
+.box p{margin:0 0 10px}
+.box .sub{font-weight:600;margin-bottom:4px}
+.back,.orig{display:inline-block;min-height:44px;line-height:44px;font-weight:600;font-size:14px;color:var(--accent)}
+footer{font-size:12px;color:var(--muted);margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script id="exemplo" type="application/json">
+{"atualizado":"2026-11-10T12:00:00Z","noticias":[
+{"id":"1","categoria":"Política local","exemplo":true,"titulo":"Câmara de uma cidade fictícia vota projeto sobre horário do comércio aos domingos","fonte":"[FONTE]","link":"#","versoes":{
+"factual":"A Câmara Municipal discute um projeto que permitiria ao comércio abrir aos domingos. O texto ainda não foi votado em plenário.\nO que ainda não se sabe:\nA data da votação e as regras para os funcionários não foram divulgadas.",
+"centro":"O projeto sobre a abertura do comércio aos domingos divide opiniões: defensores falam em escolha do consumidor e atividade econômica; críticos, na jornada dos funcionários. A votação ainda não tem data.",
+"direita":"O projeto propõe liberdade para o comércio abrir aos domingos, tema ligado à livre iniciativa e ao poder de escolha do consumidor. O texto ainda não foi votado; a data e as regras para os funcionários não foram divulgadas.",
+"esquerda":"O projeto de abrir o comércio aos domingos levanta dúvidas sobre jornada e descanso dos trabalhadores, que ainda não sabem quais regras valerão. O texto não foi votado e a data não foi divulgada."}},
+{"id":"2","categoria":"Saúde","exemplo":true,"titulo":"Secretaria divulga novo calendário de campanhas de vacinação","fonte":"[FONTE]","link":"#","versoes":{
+"factual":"A Secretaria de Saúde divulgou um novo calendário de campanhas de vacinação.",
+"centro":"O novo calendário de vacinação organiza as campanhas e reacende o debate sobre alcance e divulgação.",
+"direita":"A Secretaria apresentou o calendário de vacinação, o que traz ao debate a eficiência da gestão e a escolha das famílias.",
+"esquerda":"O novo calendário reforça a vacinação como política pública de acesso universal, ponto central do sistema de saúde."}},
+{"id":"3","categoria":"Economia","exemplo":true,"titulo":"Órgão de estatística atualiza indicadores de emprego","fonte":"[FONTE]","link":"#","versoes":{
+"factual":"O órgão de estatística atualizou os indicadores de emprego. Os números completos estão na página oficial.",
+"centro":"Com a atualização dos indicadores de emprego, analistas de diferentes linhas comparam os dados. Os números completos estão na página oficial.",
+"direita":"Os novos indicadores de emprego ajudam a avaliar o ambiente de negócios e a geração de vagas. Os números estão na página oficial.",
+"esquerda":"Os novos indicadores de emprego ajudam a avaliar a qualidade das vagas e a renda dos trabalhadores. Os números estão na página oficial."}}
+]}
+</script>
+<script>
+const NOME = "Mesmo Fato";
+const ENFOQUES = [["factual","Factual"],["centro","Centro"],["direita","Direita"],["esquerda","Esquerda"]];
+const app = document.getElementById("app");
+let noticias = [], atualizado = "", enfoque = "factual";
+try { const s = localStorage.getItem("enfoque"); if (s && ENFOQUES.some(e => e[0] === s)) enfoque = s; } catch (e) {}
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const urlOk = u => /^https?:\/\//i.test(u) ? u : "#";
+const paragrafos = t => String(t || "").split(/\n+/).filter(Boolean)
+  .map(p => p.length < 45 && p.endsWith(":") ? `<p class="sub">${esc(p)}</p>` : `<p>${esc(p)}</p>`).join("");
+const rotulo = k => k === "factual" ? "Versão factual · gerada por IA" : `Versão com enfoque de ${k} (gerada por IA)`;
+const botoes = () => `<div class="seg" role="group" aria-label="Enfoque de leitura">` +
+  ENFOQUES.map(([k, n]) => `<button data-e="${k}" aria-pressed="${k === enfoque}">${n}</button>`).join("") + `</div>`;
+const rodape = () => {
+  const d = atualizado ? new Date(atualizado) : null;
+  const quando = d && !isNaN(d) ? ` Atualizado em ${d.toLocaleString("pt-BR")}.` : "";
+  return `<footer>Textos gerados por IA a partir de fontes citadas e podem conter erros. Confira sempre a matéria original.${quando}</footer>`;
+};
+const cat = n => esc(n.categoria) + (n.exemplo ? " · exemplo" : "");
+
+function home() {
+  app.innerHTML = `<h1 class="brand">${esc(NOME)}</h1>
+<p class="muted">Notícias do Brasil, de forma direta e clara. Textos escritos por IA a partir de fontes, sempre com crédito e link.</p>
+<div class="lbl">COMO VOCÊ QUER LER</div>${botoes()}
+<h2>Últimas notícias</h2>` +
+  noticias.map(n => `<a class="card" href="#noticia-${esc(n.id)}"><div class="cat">${cat(n)}</div><div class="tit">${esc(n.titulo)}</div><div class="meta">Fonte: ${esc(n.fonte)} · resumo gerado por IA</div></a>`).join("") + rodape();
+}
+
+function detalhe(n) {
+  const v = (n.versoes || {})[enfoque] || (n.versoes || {}).factual;
+  app.innerHTML = `<a class="back" href="#">← Início</a>
+<div class="cat">${cat(n)}</div>
+<h1 class="tit2">${esc(n.titulo)}</h1>
+<div class="lbl">SEU ENFOQUE</div>${botoes()}
+<article class="box"><div class="rot">${esc(rotulo(enfoque))}</div>${paragrafos(v)}</article>
+<p class="meta">Muda a ênfase e as palavras. Os fatos devem ser os mesmos em todas as versões; confira sempre o original.</p>
+<a class="orig" href="${esc(urlOk(n.link))}" target="_blank" rel="noopener noreferrer">Ler a matéria original em ${esc(n.fonte)}</a>` + rodape();
+}
+
+function render() {
+  const m = /^#noticia-([\w-]+)$/.exec(location.hash);
+  const n = m && noticias.find(x => String(x.id) === m[1]);
+  document.title = n ? `${n.titulo} · ${NOME}` : NOME;
+  n ? detalhe(n) : home();
+}
+
+app.addEventListener("click", e => {
+  const b = e.target.closest("button[data-e]");
+  if (!b) return;
+  enfoque = b.dataset.e;
+  try { localStorage.setItem("enfoque", enfoque); } catch (err) {}
+  render();
+});
+addEventListener("hashchange", () => { render(); scrollTo(0, 0); });
+
+(async () => {
+  let d;
+  try {
+    const r = await fetch("dados/noticias.json", { cache: "no-store" });
+    if (!r.ok) throw new Error("sem dados");
+    d = await r.json();
+  } catch (err) {
+    d = JSON.parse(document.getElementById("exemplo").textContent);
+  }
+  noticias = d.noticias || [];
+  atualizado = d.atualizado || "";
+  render();
+})();
+</script>
+</body>
+</html>
